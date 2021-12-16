@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+    WIP - Do not use!
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+    <title>Monogatari Naku</title>
+</head>
+<body>
+    <div class="body-wrapper">
+        <div class="container">
+            <div class="left column">
+                <div class="cover">
+                    <picture>
+                        <source class="cover-img" srcset="" alt="Monogatari Naku Cover">
+                        <img class="cover-img" src="/media/chapters/cover.png" alt="Monogatari Naku Cover">
+                    </picture>
+                </div>
+                <div class="links">
+                    <div class="patreon-link">
+                        <a href="https://www.patreon.com/bePatron?u=2759572" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+                    </div>
+                </div>
+            </div>
+            <div class="right column">
+                <h1 class="comic-title">Monogatari Naku</h1>
+                <div class="description">
+                    <p>Monogatari Naku is a 4-koma web comic series created by Corral Summer.</p>
+                </div>
+                <div class="chapters">
+                    <h2 class="chapter-heading">Chapters</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row"><a href="#">Chapter 1</a></td>
+                                <td scope="row">2021-06-23</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

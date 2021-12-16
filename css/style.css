@@ -1,0 +1,96 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+html * {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+}
+
+.comic-title {
+    font-size: 25pt;
+}
+
+.chapter-heading {
+    margin-bottom: 0;
+    font-weight: normal;
+    font-size: 15pt;
+}
+
+table {
+    border-collapse: collapse;
+    border: none;
+    width: 100%;
+    margin: 1em auto;
+}
+
+table tr {
+    border-bottom: 1px solid #555;
+}
+
+table tbody tr:hover {
+    background-color: #222;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 0.5em;
+}
+
+table td:last-child, table th:last-child {
+    text-align: right;
+}
+
+table td:first-child {
+    padding-left: 1.5em;
+}
+
+.body-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #111;
+    margin: auto;
+}
+
+.container {
+    display: flex;
+    padding: 10px;
+}
+
+.column {
+    padding: 10px;
+}
+
+.left {
+    flex: 25%;
+}
+
+.right {
+    flex: 75%;
+}
+
+.cover-img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: cyan;
+}
+
+.patreon-link {
+    text-align:center;
+    padding: 1em;
+}

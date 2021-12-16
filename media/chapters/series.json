@@ -1,0 +1,20 @@
+{
+    "series": {
+        "title": "Monogatari Naku",
+        "title_ja": "物語なく",
+        "description": "The unremarkable lives of Dora and Yoroko. They have no grand adventures, no secret plots to uncover, no prophecies to fufil. Their lives are so typical that there really is no story to tell here.",
+        "description_ja": "物語なくの概要はこちら…",
+        "author": "Corral Summer"
+    },
+    "chapters": {
+        "001": {
+            "pages": 15,
+            "title": "Nazo no Okujou",
+            "title_ja": "第一章のタイトル",
+            "description": "Yoroko is certain the roof has something amazing on it. ",
+            "description_ja": "第一章の概要はこちら…",
+            "commentary": "First chapter. Second chapter should come sometime in January. unless ur watching this in the future in which case it already exists.",
+            "commentary_ja": "解説はこちら…"
+        }
+    }
+}
