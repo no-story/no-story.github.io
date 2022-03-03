@@ -2,7 +2,7 @@
     "series": {
         "title": "Monogatari Naku",
         "title_ja": "物語なく",
-        "description": "The unremarkable lives of Dora and Yoroko. They have no grand adventures, no secret plots to uncover, no prophecies to fufil. Their lives are so typical that there really is no story to tell here.",
+        "description": "The unremarkable lives of Dora and Yoroko. They have no grand adventures, no secret plots to uncover, no prophecies to fulfil. Their lives are so typical that there really is no story to tell here.",
         "description_ja": "物語なくの概要はこちら…",
         "author": "Corral Summer"
     },
@@ -13,7 +13,16 @@
             "title_ja": "第一章のタイトル",
             "description": "Yoroko is certain the roof has something amazing on it. ",
             "description_ja": "第一章の概要はこちら…",
-            "commentary": "First chapter. Second chapter should come sometime in January. unless ur watching this in the future in which case it already exists.",
+            "commentary": "First chapter. Second chapter should come sometime in January (future edit, it did not come in January, I am a failure). unless ur watching this in the future in which case it already exists.",
+            "commentary_ja": "解説はこちら…"
+        },
+        "002": {
+            "pages": 11,
+            "title": "Yoroko no Daibouken",
+            "title_ja": "第一章のタイトル",
+            "description": "Yoroko goes to Dora's house. ",
+            "description_ja": "第一章の概要はこちら…",
+            "commentary": "Second chapter came later than expected. I am quite happy with how it turned out tho. I think it's much, much better than the first chapter in every way. I used this chapter as a chance to explore what kind of character I wanted Yoroko to be. During the first chapter I wasn't quite sure what I wanted to do with her. Unlike Dora who I have many, many terrible ideas.",
             "commentary_ja": "解説はこちら…"
         }
     }
