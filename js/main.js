@@ -53,8 +53,8 @@ function getProgressFromURL({ chapter: defaultChapter, page: defaultPage }) {
     var urlHash = window.location.hash.slice(1) || "/";
     var chPg = urlHash.split("/");
 
-    var chapter = chPg[0] || defaultChapter;
-    var page    = chPg[1] || defaultPage;
+    var chapter = parseInt(chPg[0]) || defaultChapter;
+    var page    = parseInt(chPg[1]) || defaultPage;
     return {
         chapter, page,
         paddedChapter: `${chapter}`.padStart(3, '0'),
