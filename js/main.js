@@ -8,6 +8,8 @@ CONTENT_PATH = "/media/chapters/"; // must include trailing slash
 
 async function fetchContent(path) {
     let response = await fetch(CONTENT_PATH + path);
+    if (!response.ok)
+        throw new Error(`Failed to request '${path}': ${response.status} ${response.statusText}`);
     return response;
 }
 
@@ -91,13 +93,18 @@ function Reader(o={}) {
             title:       document.getElementById('chapter-title'),
             progress:    document.getElementById('chapter-progress'),
             description: document.getElementById('chapter-desc'),
-            commentary:  document.getElementById('commentary-text')
+            commentary:  document.getElementById('commentary-text'),
+            info:        document.getElementById('chapter-info')
         },
         page: {
             info:        document.getElementById('page-info'),
             progress:    document.getElementById('page-progress'),
         },
         reader:          document.getElementById("reader"),
+        rNav: {
+            prev:        document.getElementById("prev-nav"),
+            next:        document.getElementById("next-nav")
+        },
         loading: {
             overlay:     document.getElementById('loading-overlay'),
             progress:    document.getElementById('loading-progress')
@@ -109,6 +116,8 @@ function Reader(o={}) {
     this.lastProgress    = {};
 
     this.updatedHash = `#${this.currentProgress.chapter}/${this.currentProgress.page}`;
+
+    this.isLoading = false;
 
     this.getSeriesInfo = async function() {
         var seriesInfo      = !((this.seriesState || {}).seriesInfo)
@@ -128,23 +137,44 @@ function Reader(o={}) {
     }
 
     this.loadImages = async function() {
+        if (this.isLoading) return;
+        this.isLoading = true;
+
         const { reader, series, loading } = this.elems;
         const { currentChapter } = this.seriesState;
+
+        loading.overlay.style.display = 'flex';
+        loading.progress.innerHTML = `Chapter ${this.currentProgress.chapter}`;
 
         let coverImg = await fetchCover();
         series.cover.src = URL.createObjectURL(coverImg);
 
         reader.innerHTML = "";
         loading.progress.style.opacity = 1;
+
         for (let i = 0; i <= currentChapter.pages; i++) {
-            let pageImg = await fetchPage(this.currentProgress.chapter, i);
-            let pageElem = document.createElement('img');
-            pageElem.src = URL.createObjectURL(pageImg);
-            pageElem.loading = "eagar";
-            pageElem.dataset.page = i;
-            pageElem.classList.add("reader-page");
-            reader.append(pageElem);
-            loading.progress.innerHTML = `${parseInt(((i+1)/currentChapter.pages)*100)}%`
+            try {
+                var pageImg = await fetchPage(this.currentProgress.chapter, i);
+            
+                let pageElem = document.createElement('img');
+                pageElem.src = URL.createObjectURL(pageImg);
+                pageElem.loading = "eagar";
+                pageElem.dataset.page = i;
+                pageElem.classList.add("reader-page");
+                reader.append(pageElem);
+                loading.progress.innerHTML = `${parseInt(((i+1)/currentChapter.pages)*100)}%`;
+            } catch (error) {
+                if (error.message.includes("404")) {
+                    console.log(`Skipping page ${i} due to 404 error.`);
+                }
+                // If the error is not 404, something is wrong, so dont skip.
+            }
+        }
+
+        firstLoadedPage = reader.children[0].dataset.page;
+        if (firstLoadedPage >= 0 && firstLoadedPage != this.firstPage) {
+            this.firstPage = firstLoadedPage;
+            this.updateProgress(this.currentProgress);
         }
 
         loading.progress.style.opacity = 0;
@@ -165,6 +195,8 @@ function Reader(o={}) {
         });
 
         loading.overlay.style.display = 'none';
+
+        this.isLoading = false;
     }
 
     this.onReaderScroll = function() {
@@ -200,7 +232,7 @@ function Reader(o={}) {
             throw new Error('seriesState needs to be defined before updateHTML can be called.');
         }
 
-        const {series, chapter, page } = this.elems;
+        const { series, chapter, page, rNav } = this.elems;
         const {seriesInfo: meta, currentChapter, totalChapters} = this.seriesState;
 
         series.title.innerHTML       = meta.series.title;
@@ -210,9 +242,51 @@ function Reader(o={}) {
         chapter.description.innerHTML = currentChapter.description;
         chapter.commentary.innerHTML  = currentChapter.commentary;
         chapter.progress.innerHTML    = `(${this.currentProgress.chapter}/${totalChapters})`;
+        chapter.info.innerHTML    = `Chapter ${this.currentProgress.chapter}`
+
+        let prevChapterEvent = this.prevChapter.bind(this);
+        let nextChapterEvent = this.nextChapter.bind(this);
+
+        if (this.currentProgress.chapter > this.firstChapter) {
+            rNav.prev.innerHTML = "Previous Chapter";
+            rNav.prev.classList.add("active");
+            rNav.prev.addEventListener("click", prevChapterEvent);
+        } else {
+            rNav.prev.classList.remove("active");
+            rNav.prev.innerHTML = "You're on the first chapter."
+        }
+        
+        if (this.currentProgress.chapter < totalChapters) {
+            rNav.next.innerHTML = "Next Chapter";
+            rNav.next.classList.add("active");
+            rNav.next.addEventListener("click", nextChapterEvent);
+        } else {
+            rNav.next.classList.remove("active");
+            rNav.next.innerHTML = "You're all caught up!"
+        }
 
         page.info.style.visibility = this.currentProgress.page <= 0 ? 'hidden' : 'unset';
         page.progress.innerHTML = this.currentProgress.page <= 0 ? "" : `${this.currentProgress.page}/${currentChapter.pages}`;
+    }
+
+    this.prevChapter = async function() {
+        if (this.isLoading) return;
+        if (this.currentProgress.chapter > this.firstChapter) {
+            let prevChapterProgress = { chapter: this.currentProgress.chapter - 1, page: 0 }
+            await this.updateProgress(prevChapterProgress);
+            await this.loadImages();
+            this.scrollToPage(this.firstPage);
+        }
+    }
+
+    this.nextChapter = async function() {
+        if (this.isLoading) return;
+        if (this.currentProgress.chapter < this.seriesState.totalChapters) {
+            let nextChapterProgress = { chapter: this.currentProgress.chapter + 1, page: 0 }
+            await this.updateProgress(nextChapterProgress);
+            await this.loadImages();
+            this.scrollToPage(this.firstPage);
+        }
     }
 
     this.updateProgress = async function({chapter, page}) {
@@ -265,7 +339,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.addEventListener("hashchange", async (event) => {
         var newProgress = getProgressFromURL(reader.defaultProgress);
         if (newProgress.urlHash != reader.updatedHash) {
-            reader.updateProgress(newProgress);
+            await reader.updateProgress(newProgress);
+            if (newProgress.chapter != reader.lastProgress.chapter) {
+                await reader.loadImages()
+            }
             reader.scrollToPage(newProgress.page);
         }
     });

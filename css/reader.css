@@ -75,11 +75,73 @@ body {
     opacity: 0;
 }
 
+.chapter-nav {
+    background-color: #111;
+    color: #aaa;
+    font-weight: normal;
+    width: 100%;
+    padding: 2em;
+}
+
+.chapter-nav.active {
+    font-weight: bold;
+    color: white;
+}
+
+.chapter-nav.active:hover {
+    background-color: #333;
+    cursor: pointer;
+}
+
+#next-nav {
+    padding-bottom: 3em;
+}
+
+#next-nav.active {
+    padding-bottom: 6em;
+}
+
+#prev-nav.active::before {
+    padding-right: 2em;
+    font-family: "Font Awesome 5 Free";
+    content: "\f106";
+    color: #aaa;
+    font-weight: normal;
+}
+
+#prev-nav.active::after {
+    padding-left: 2em;
+    font-family: "Font Awesome 5 Free";
+    content: "\f106";
+    color: #aaa;
+    font-weight: normal;
+}
+
+#next-nav.active::before {
+    padding-right: 2em;
+    font-family: "Font Awesome 5 Free";
+    content: "\f107";
+    color: #aaa;
+    font-weight: normal;
+}
+
+#next-nav.active::after {
+    padding-left: 2em;
+    font-family: "Font Awesome 5 Free";
+    content: "\f107";
+    color: #aaa;
+    font-weight: normal;
+}
+
 #reader > img {
     min-height: 100vh;
     max-height: 100vh;
     display: block;
     margin-bottom: 1em;
+}
+
+#reader > img:first-child {
+    margin-top: 1em;
 }
 
 .left-column, .right-column {
@@ -92,6 +154,12 @@ body {
 
 .right-column > .middle {
     height: 100%;
+}
+
+.right-column > .topmost {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .cover-img {
@@ -123,7 +191,7 @@ body {
     display: none;
 }
 
-#page-info {
+#page-info, #chapter-info {
     margin: 0;
     padding: 0;
 }
@@ -189,6 +257,19 @@ body {
 
     #small-title {
         display: block;
+        padding-top: 1em;
+    }
+
+    .right-column > .topmost {
+        display: block;
+    }
+
+    #page-info {
+        float: right;
+    }
+
+    #chapter-info {
+        float: left;
     }
 }
 
@@ -252,12 +333,16 @@ body {
         margin-top: 0;
     }
 
-    #reader > img:first-of-type {
-        padding-top: 3.5em;
+    #prev-nav {
+        padding-top: 5.5em;
     }
 
-    #reader > img:last-of-type {
+    #next-nav {
         padding-bottom: 3.5em;
+    }
+
+    #reader > img {
+        scroll-margin-top: 3.5em;
     }
 
     .m-hidden {
